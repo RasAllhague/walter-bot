@@ -11,7 +11,6 @@ pub struct RoleRight {
     modify_user_id: Option<u64>,
 }
 
-
 pub enum BotRight {
     ManageRoleSelect,
     ManageRights,

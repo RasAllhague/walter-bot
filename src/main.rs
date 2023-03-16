@@ -4,10 +4,10 @@ use handler::Handler;
 use serenity::prelude::*;
 use tracing::{instrument, log::error};
 
-mod utils;
-mod handler;
 mod commands;
+mod handler;
 pub mod models;
+mod utils;
 
 #[tokio::main]
 #[instrument]
@@ -30,9 +30,7 @@ async fn main() {
 
     let intents = GatewayIntents::default();
     let mut client = Client::builder(&token, intents)
-        .event_handler(Handler {
-            database,
-        })
+        .event_handler(Handler { database })
         .await
         .expect("Err creating client");
 

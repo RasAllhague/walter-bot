@@ -1,3 +1,4 @@
+pub mod infractions;
 pub mod parser;
 
 use serenity::{
@@ -15,7 +16,7 @@ pub trait SlashCommand {
         command: &ApplicationCommandInteraction,
         ctx: &Context,
         database: &sqlx::PgPool,
-    ) -> Result<CommandError, String>;
+    ) -> Result<(), CommandError>;
 }
 
 #[derive(Debug)]

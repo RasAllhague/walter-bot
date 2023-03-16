@@ -1,6 +1,9 @@
-use serenity::{async_trait, prelude::{Context, EventHandler}, model::prelude::{interaction::Interaction, Ready, ResumedEvent}};
-use tracing::{log::debug, info, instrument};
-
+use serenity::{
+    async_trait,
+    model::prelude::{interaction::Interaction, Ready, ResumedEvent},
+    prelude::{Context, EventHandler},
+};
+use tracing::{info, instrument, log::debug};
 
 pub struct Handler {
     pub database: sqlx::PgPool,
@@ -20,7 +23,6 @@ impl EventHandler for Handler {
 
     async fn ready(&self, ctx: Context, ready: Ready) {
         info!("{} is connected!", ready.user.name);
-        
     }
 
     #[instrument(skip(self, _ctx))]

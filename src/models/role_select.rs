@@ -9,7 +9,7 @@ pub struct RoleSelect {
     create_date: NaiveDateTime,
     create_user_id: u64,
     modify_date: Option<NaiveDateTime>,
-    modify_user_id: Option<u64>
+    modify_user_id: Option<u64>,
 }
 
 pub struct RoleSelectReaction {
@@ -22,5 +22,5 @@ pub struct RoleSelectReaction {
     create_date: NaiveDateTime,
     create_user_id: u64,
     modify_date: Option<NaiveDateTime>,
-    modify_user_id: Option<u64>
+    modify_user_id: Option<u64>,
 }
