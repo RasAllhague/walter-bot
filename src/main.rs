@@ -7,6 +7,7 @@ use tracing::{instrument, log::error};
 mod utils;
 mod handler;
 mod commands;
+pub mod models;
 
 #[tokio::main]
 #[instrument]
