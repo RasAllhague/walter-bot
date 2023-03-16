@@ -3,8 +3,7 @@ use tracing::{log::debug, info, instrument};
 
 
 pub struct Handler {
-    //pub database: sqlx::PgPool,
-    //pub is_loop_running: AtomicBool,
+    pub database: sqlx::PgPool,
 }
 
 #[async_trait]

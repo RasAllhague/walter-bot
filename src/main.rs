@@ -6,6 +6,7 @@ use tracing::{instrument, log::error};
 
 mod utils;
 mod handler;
+mod commands;
 
 #[tokio::main]
 #[instrument]
@@ -21,16 +22,15 @@ async fn main() {
         .await
         .expect("Couldn't connect to database");
 
-    // sqlx::migrate!("./migrations")
-    //     .run(&database)
-    //     .await
-    //     .expect("Couldn't run database migrations");
+    sqlx::migrate!("./migrations")
+        .run(&database)
+        .await
+        .expect("Couldn't run database migrations");
 
     let intents = GatewayIntents::default();
     let mut client = Client::builder(&token, intents)
         .event_handler(Handler {
-            //database,
-            //is_loop_running: AtomicBool::new(false),
+            database,
         })
         .await
         .expect("Err creating client");
