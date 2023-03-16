@@ -1,5 +1,6 @@
-use std::env;
+use std::{env, sync::Arc};
 
+use commands::{SlashCommand, infractions::InfractionCommand};
 use handler::Handler;
 use serenity::prelude::*;
 use tracing::{instrument, log::error};
@@ -28,9 +29,12 @@ async fn main() {
         .await
         .expect("Couldn't run database migrations");
 
+    let mut commands: Vec<Arc<dyn SlashCommand>> = Vec::new();
+    commands.push(Arc::new(InfractionCommand));
+
     let intents = GatewayIntents::default();
     let mut client = Client::builder(&token, intents)
-        .event_handler(Handler { database })
+        .event_handler(Handler { database, commands })
         .await
         .expect("Err creating client");
 

@@ -9,8 +9,8 @@ use serenity::{
 
 use self::parser::ParserError;
 
-pub trait SlashCommand {
-    fn register(&self, command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand;
+pub trait SlashCommand: Send + Sync {
+    fn register<'a>(&'a self, command: &'a mut CreateApplicationCommand) -> &mut CreateApplicationCommand;
     fn dispatch(
         &self,
         command: &ApplicationCommandInteraction,
