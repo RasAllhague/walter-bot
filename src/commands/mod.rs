@@ -3,6 +3,7 @@ pub mod parser;
 pub mod timeout;
 pub mod say;
 pub mod nuke;
+pub mod role_selection;
 
 use serenity::{
     builder::CreateApplicationCommand,

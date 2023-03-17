@@ -1,6 +1,6 @@
 use std::{env, sync::Arc};
 
-use commands::{SlashCommand, infractions::InfractionCommand, timeout::TimeoutCommand, nuke::NukeCommand, say::SayCommand};
+use commands::{SlashCommand, infractions::InfractionCommand, timeout::TimeoutCommand, nuke::NukeCommand, say::SayCommand, role_selection::RoleSelectionCommand};
 use handler::Handler;
 use serenity::prelude::*;
 use tracing::{instrument, log::error};
@@ -34,6 +34,7 @@ async fn main() {
     commands.push(Arc::new(TimeoutCommand));
     commands.push(Arc::new(NukeCommand));
     commands.push(Arc::new(SayCommand));
+    commands.push(Arc::new(RoleSelectionCommand));
 
     let intents = GatewayIntents::default();
     let mut client = Client::builder(&token, intents)
