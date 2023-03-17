@@ -1,5 +1,8 @@
 pub mod infractions;
 pub mod parser;
+pub mod timeout;
+pub mod say;
+pub mod nuke;
 
 use serenity::{
     builder::CreateApplicationCommand,
