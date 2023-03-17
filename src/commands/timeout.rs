@@ -1,4 +1,11 @@
-use serenity::{builder::CreateApplicationCommand, model::prelude::{interaction::application_command::{self, ApplicationCommandInteraction}, command::CommandOptionType}, prelude::Context};
+use serenity::{
+    builder::CreateApplicationCommand,
+    model::prelude::{
+        command::CommandOptionType,
+        interaction::application_command::ApplicationCommandInteraction,
+    },
+    prelude::Context,
+};
 
 use super::SlashCommand;
 
@@ -11,7 +18,7 @@ impl TimeoutCommand {
             .description("Command group for timeouts.")
             .create_option(|sub_command| {
                 sub_command
-                    .name("set") 
+                    .name("set")
                     .description("Timeouts a user.")
                     .kind(CommandOptionType::SubCommand)
                     .create_sub_option(|option| {
@@ -38,13 +45,15 @@ impl TimeoutCommand {
             })
     }
 
-    fn build_revoke_command(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn build_revoke_command(
+        command: &mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         command
             .name("timeout")
             .description("Command group for timeouts.")
             .create_option(|sub_command| {
                 sub_command
-                    .name("revoke") 
+                    .name("revoke")
                     .description("Revokes a timeout of from a user.")
                     .kind(CommandOptionType::SubCommand)
                     .create_sub_option(|option| {
@@ -66,7 +75,10 @@ impl TimeoutCommand {
 }
 
 impl SlashCommand for TimeoutCommand {
-    fn register<'a>(&'a self, command: &'a mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn register<'a>(
+        &'a self,
+        command: &'a mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         Self::build_set_command(command);
         Self::build_revoke_command(command)
     }
