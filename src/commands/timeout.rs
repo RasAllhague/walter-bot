@@ -2,9 +2,9 @@ use serenity::{builder::CreateApplicationCommand, model::prelude::{interaction::
 
 use super::SlashCommand;
 
-pub struct Timeout;
+pub struct TimeoutCommand;
 
-impl Timeout {
+impl TimeoutCommand {
     fn build_set_command(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
             .name("timeout")
@@ -65,7 +65,7 @@ impl Timeout {
     }
 }
 
-impl SlashCommand for Timeout {
+impl SlashCommand for TimeoutCommand {
     fn register<'a>(&'a self, command: &'a mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         Self::build_set_command(command);
         Self::build_revoke_command(command)
