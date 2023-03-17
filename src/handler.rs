@@ -1,4 +1,4 @@
-use std::{rc::Rc, sync::Arc};
+use std::sync::Arc;
 
 use serenity::{
     async_trait,
@@ -7,7 +7,7 @@ use serenity::{
 };
 use tracing::{info, instrument, log::{debug, error}};
 
-use crate::commands::{SlashCommand, infractions::InfractionCommand};
+use crate::commands::SlashCommand;
 
 pub struct Handler {
     pub database: sqlx::PgPool,
