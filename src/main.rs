@@ -30,12 +30,12 @@ async fn main() {
         .expect("Couldn't run database migrations");
 
     let mut commands: Vec<Arc<dyn SlashCommand>> = Vec::new();
-    commands.push(Arc::new(InfractionCommand));
-    commands.push(Arc::new(TimeoutCommand));
+    // commands.push(Arc::new(InfractionCommand));
+    // commands.push(Arc::new(TimeoutCommand));
     commands.push(Arc::new(NukeCommand));
     commands.push(Arc::new(SayCommand));
-    commands.push(Arc::new(RoleSelectionCommand));
-    commands.push(Arc::new(TicketCommand));
+    // commands.push(Arc::new(RoleSelectionCommand));
+    // commands.push(Arc::new(TicketCommand));
     commands.push(Arc::new(LssCommand));
 
     let intents = GatewayIntents::default();
