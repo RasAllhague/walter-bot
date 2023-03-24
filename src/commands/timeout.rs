@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use serenity::{
     builder::CreateApplicationCommand,
     model::prelude::{
@@ -5,6 +6,9 @@ use serenity::{
     },
     prelude::Context,
 };
+use tracing::log::warn;
+
+use crate::handler::Configuration;
 
 use super::SlashCommand;
 
@@ -73,6 +77,7 @@ impl TimeoutCommand {
     }
 }
 
+#[async_trait]
 impl SlashCommand for TimeoutCommand {
     fn register<'a>(
         &'a self,
@@ -82,12 +87,15 @@ impl SlashCommand for TimeoutCommand {
         Self::build_revoke_command(command)
     }
 
-    fn dispatch(
+    async fn dispatch(
         &self,
         command: &ApplicationCommandInteraction,
         ctx: &Context,
         database: &sqlx::PgPool,
+        configuration: &Configuration,
     ) -> Result<(), super::CommandError> {
-        todo!()
+        warn!("Not implemented!");
+
+        Ok(())
     }
 }

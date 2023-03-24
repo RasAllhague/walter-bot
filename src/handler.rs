@@ -12,19 +12,51 @@ use tracing::{
 
 use crate::commands::SlashCommand;
 
-pub struct Handler {
+pub struct BotHandler {
     pub database: sqlx::PgPool,
     pub commands: Vec<Arc<dyn SlashCommand>>,
+    pub lls_file_path: String,
+}
+
+pub struct Configuration {
+    pub lls_file_path: String,
+}
+
+impl BotHandler {
+    pub fn new(
+        db: sqlx::PgPool,
+        commands: &[Arc<dyn SlashCommand>],
+        lls_file_path: &str,
+    ) -> BotHandler {
+        BotHandler {
+            database: db,
+            commands: commands.into(),
+            lls_file_path: String::from(lls_file_path),
+        }
+    }
 }
 
 #[async_trait]
-impl EventHandler for Handler {
+impl EventHandler for BotHandler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
-        if let Interaction::ApplicationCommand(command) = interaction {
-            debug!("Received command interaction: {:#?}", command);
+        if let Interaction::ApplicationCommand(command_interaction) = interaction {
+            debug!("Received command interaction: {:#?}", command_interaction);
 
-            if command.guild_id.is_none() {
+            if command_interaction.guild_id.is_none() {
                 return;
+            }
+
+            let conf = Configuration {
+                lls_file_path: self.lls_file_path.clone(),
+            };
+
+            for command in self.commands.iter() {
+                if let Err(why) = command
+                    .dispatch(&command_interaction, &ctx, &self.database, &conf)
+                    .await
+                {
+                    error!("Error during command interaction: {:?}", why);
+                }
             }
         }
     }

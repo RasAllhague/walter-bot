@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use serenity::{
     builder::CreateApplicationCommand,
     model::prelude::{
@@ -5,6 +6,9 @@ use serenity::{
     },
     prelude::Context,
 };
+use tracing::log::warn;
+
+use crate::handler::Configuration;
 
 use super::{CommandError, SlashCommand};
 
@@ -96,6 +100,7 @@ impl RoleSelectionCommand {
     }
 }
 
+#[async_trait]
 impl SlashCommand for RoleSelectionCommand {
     fn register<'a>(
         &'a self,
@@ -107,12 +112,15 @@ impl SlashCommand for RoleSelectionCommand {
         Self::build_remove_role_command(command)
     }
 
-    fn dispatch(
+    async fn dispatch(
         &self,
         command: &ApplicationCommandInteraction,
         ctx: &Context,
         database: &sqlx::PgPool,
+        configuration: &Configuration,
     ) -> Result<(), CommandError> {
-        todo!()
+        warn!("Not implemented!");
+
+        Ok(())
     }
 }

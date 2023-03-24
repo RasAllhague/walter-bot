@@ -1,5 +1,7 @@
+use std::{fmt, error::Error};
+
 use serenity::model::{
-    prelude::interaction::application_command::{CommandDataOption, CommandDataOptionValue},
+    prelude::{interaction::application_command::{CommandDataOption, CommandDataOptionValue}, ChannelId},
     user::User,
 };
 use sqlx::types::chrono::{NaiveDate, NaiveDateTime};
@@ -8,8 +10,9 @@ use sqlx::types::chrono::{NaiveDate, NaiveDateTime};
 pub enum ParserError {
     Date,
     User(String),
+    ChannelId(String),
+    Text(String),
 }
-
 pub struct UserInputParser;
 
 impl UserInputParser {
@@ -65,5 +68,33 @@ impl DateInputParser {
         }
 
         Err(format!("Option {} not found!", index))
+    }
+}
+
+pub struct OptionParser;
+
+impl OptionParser {
+    pub fn parse_channel_id(&self, options: &[CommandDataOption], index: usize) -> Result<ChannelId, ParserError> {
+        if let Some(option) = options.get(index) {
+            if let Some(value) = option.resolved.as_ref() {
+                if let CommandDataOptionValue::Channel(data) = value {
+                    return Ok(data.id);
+                }
+            }
+        }
+
+        Err(ParserError::ChannelId(format!("No ChannelId option was found at index {}!", index)))
+    }
+
+    pub fn parse_string(&self, options: &[CommandDataOption], index: usize) -> Result<String, ParserError> {
+        if let Some(option) = options.get(index) {
+            if let Some(value) = option.resolved.as_ref() {
+                if let CommandDataOptionValue::String(data) = value {
+                    return Ok(data.clone());
+                }
+            }
+        }
+
+        Err(ParserError::Text(format!("No Text option was found at index {}!", index)))
     }
 }

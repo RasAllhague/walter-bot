@@ -5,7 +5,8 @@ use commands::{
     role_selection::RoleSelectionCommand, say::SayCommand, ticket::TicketCommand,
     timeout::TimeoutCommand, SlashCommand,
 };
-use handler::Handler;
+use config::AppConfigurations;
+use handler::BotHandler;
 use serenity::prelude::*;
 use tracing::{instrument, log::error};
 
@@ -13,18 +14,20 @@ mod commands;
 mod handler;
 pub mod models;
 mod utils;
+mod config;
+
+
 
 #[tokio::main]
 #[instrument]
 async fn main() {
     tracing_subscriber::fmt::init();
 
-    let token = env::var("WALTER_BOT_TOKEN").expect("Expected a token in the environment");
-    let db_url = env::var("WALTER_DATABASE_URL").expect("Expected database url in the environment");
+    let config = AppConfigurations::from_env();
 
     let database = sqlx::postgres::PgPoolOptions::new()
         .max_connections(5)
-        .connect(&db_url)
+        .connect(&config.database_url)
         .await
         .expect("Couldn't connect to database");
 
@@ -36,15 +39,15 @@ async fn main() {
     let mut commands: Vec<Arc<dyn SlashCommand>> = Vec::new();
     // commands.push(Arc::new(InfractionCommand));
     // commands.push(Arc::new(TimeoutCommand));
-    commands.push(Arc::new(NukeCommand));
-    commands.push(Arc::new(SayCommand));
+    // commands.push(Arc::new(NukeCommand));
+    // commands.push(Arc::new(SayCommand));
     // commands.push(Arc::new(RoleSelectionCommand));
     // commands.push(Arc::new(TicketCommand));
     commands.push(Arc::new(LssCommand));
 
     let intents = GatewayIntents::default();
-    let mut client = Client::builder(&token, intents)
-        .event_handler(Handler { database, commands })
+    let mut client = Client::builder(config.bot_token, intents)
+        .event_handler(BotHandler::new(database, &commands, &config.lls_file_path))
         .await
         .expect("Err creating client");
 

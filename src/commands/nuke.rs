@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use serenity::{
     builder::CreateApplicationCommand,
     model::prelude::{
@@ -5,11 +6,15 @@ use serenity::{
     },
     prelude::Context,
 };
+use tracing::log::warn;
+
+use crate::handler::Configuration;
 
 use super::{CommandError, SlashCommand};
 
 pub struct NukeCommand;
 
+#[async_trait]
 impl SlashCommand for NukeCommand {
     fn register<'a>(
         &'a self,
@@ -34,12 +39,15 @@ impl SlashCommand for NukeCommand {
             })
     }
 
-    fn dispatch(
+    async fn dispatch(
         &self,
         command: &ApplicationCommandInteraction,
         ctx: &Context,
         database: &sqlx::PgPool,
+        configuration: &Configuration,
     ) -> Result<(), CommandError> {
-        todo!()
+        warn!("Not implemented!");
+
+        Ok(())
     }
 }
