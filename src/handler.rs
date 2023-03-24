@@ -2,10 +2,13 @@ use std::sync::Arc;
 
 use serenity::{
     async_trait,
-    model::prelude::{interaction::Interaction, Ready, ResumedEvent, command::Command},
+    model::prelude::{command::Command, interaction::Interaction, Ready, ResumedEvent},
     prelude::{Context, EventHandler},
 };
-use tracing::{info, instrument, log::{debug, error}};
+use tracing::{
+    info, instrument,
+    log::{debug, error},
+};
 
 use crate::commands::SlashCommand;
 
@@ -28,15 +31,16 @@ impl EventHandler for Handler {
 
     async fn ready(&self, ctx: Context, ready: Ready) {
         info!("{} is connected!", ready.user.name);
-        
-        let guild_commands = Command::create_global_application_command(&ctx.http, |command_builder| {
-            for command in &self.commands {
-                command.register(command_builder);
-            }
 
-            command_builder
-        })
-        .await;
+        let guild_commands =
+            Command::create_global_application_command(&ctx.http, |command_builder| {
+                for command in &self.commands {
+                    command.register(command_builder);
+                }
+
+                command_builder
+            })
+            .await;
 
         if let Err(why) = guild_commands {
             error!("Failed to create slash commands. {}", why);

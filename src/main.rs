@@ -1,6 +1,10 @@
 use std::{env, sync::Arc};
 
-use commands::{SlashCommand, infractions::InfractionCommand, timeout::TimeoutCommand, nuke::NukeCommand, say::SayCommand, role_selection::RoleSelectionCommand, ticket::TicketCommand, lls::LssCommand};
+use commands::{
+    infractions::InfractionCommand, lls::LssCommand, nuke::NukeCommand,
+    role_selection::RoleSelectionCommand, say::SayCommand, ticket::TicketCommand,
+    timeout::TimeoutCommand, SlashCommand,
+};
 use handler::Handler;
 use serenity::prelude::*;
 use tracing::{instrument, log::error};

@@ -1,8 +1,7 @@
 use serenity::{
     builder::CreateApplicationCommand,
     model::prelude::{
-        command::CommandOptionType,
-        interaction::application_command::ApplicationCommandInteraction,
+        command::CommandOptionType, interaction::application_command::ApplicationCommandInteraction,
     },
     prelude::Context,
 };

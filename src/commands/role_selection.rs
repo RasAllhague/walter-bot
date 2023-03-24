@@ -1,6 +1,8 @@
 use serenity::{
     builder::CreateApplicationCommand,
-    model::prelude::{interaction::application_command::ApplicationCommandInteraction, command::CommandOptionType},
+    model::prelude::{
+        command::CommandOptionType, interaction::application_command::ApplicationCommandInteraction,
+    },
     prelude::Context,
 };
 
@@ -9,7 +11,9 @@ use super::{CommandError, SlashCommand};
 pub struct RoleSelectionCommand;
 
 impl RoleSelectionCommand {
-    fn build_create_command(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn build_create_command(
+        command: &mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         command
             .name("role-selection")
             .description("Commands for configuration role selection.")
@@ -28,7 +32,9 @@ impl RoleSelectionCommand {
             })
     }
 
-    fn build_add_role_command(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn build_add_role_command(
+        command: &mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         command
             .name("role-selection")
             .description("Commands for configuration role selection.")
@@ -54,7 +60,9 @@ impl RoleSelectionCommand {
             })
     }
 
-    fn build_remove_role_command(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn build_remove_role_command(
+        command: &mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         command
             .name("role-selection")
             .description("Commands for configuration role selection.")
@@ -73,7 +81,9 @@ impl RoleSelectionCommand {
             })
     }
 
-    fn build_reload_command(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn build_reload_command(
+        command: &mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         command
             .name("role-selection")
             .description("Commands for configuration role selection.")

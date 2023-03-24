@@ -1,6 +1,8 @@
 use serenity::{
     builder::CreateApplicationCommand,
-    model::prelude::{interaction::application_command::ApplicationCommandInteraction, command::CommandOptionType},
+    model::prelude::{
+        command::CommandOptionType, interaction::application_command::ApplicationCommandInteraction,
+    },
     prelude::Context,
 };
 
@@ -15,7 +17,7 @@ impl InfractionCommand {
             .description("Command group for punishing users.")
             .create_option(|sub_command| {
                 sub_command
-                    .name("warn") 
+                    .name("warn")
                     .description("Warns one or more user for a specified reason.")
                     .kind(CommandOptionType::SubCommand)
                     .create_sub_option(|option| {
@@ -90,7 +92,7 @@ impl InfractionCommand {
             .description("Command group for punishing users.")
             .create_option(|sub_command| {
                 sub_command
-                    .name("kick") 
+                    .name("kick")
                     .description("Kick one or more user for a specified reason.")
                     .kind(CommandOptionType::SubCommand)
                     .create_sub_option(|option| {
@@ -165,7 +167,7 @@ impl InfractionCommand {
             .description("Command group for punishing users.")
             .create_option(|sub_command| {
                 sub_command
-                    .name("ban") 
+                    .name("ban")
                     .description("Ban one or more user for a specified reason.")
                     .kind(CommandOptionType::SubCommand)
                     .create_sub_option(|option| {
@@ -236,7 +238,10 @@ impl InfractionCommand {
 }
 
 impl SlashCommand for InfractionCommand {
-    fn register<'a>(&'a self, command: &'a mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn register<'a>(
+        &'a self,
+        command: &'a mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         Self::build_warn_command(command);
         Self::build_kick_command(command);
         Self::build_ban_command(command)

@@ -1,11 +1,18 @@
-use serenity::{builder::CreateApplicationCommand, model::prelude::interaction::application_command::ApplicationCommandInteraction, prelude::Context};
+use serenity::{
+    builder::CreateApplicationCommand,
+    model::prelude::interaction::application_command::ApplicationCommandInteraction,
+    prelude::Context,
+};
 
-use super::{SlashCommand, CommandError};
+use super::{CommandError, SlashCommand};
 
 pub struct LssCommand;
 
 impl SlashCommand for LssCommand {
-    fn register<'a>(&'a self, command: &'a mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn register<'a>(
+        &'a self,
+        command: &'a mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         Self::build_lss_command(command)
     }
 
