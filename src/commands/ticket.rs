@@ -1,11 +1,20 @@
-use serenity::{builder::CreateApplicationCommand, model::prelude::command::CommandOptionType};
+use serenity::{
+    builder::CreateApplicationCommand,
+    model::prelude::{
+        command::CommandOptionType, interaction::application_command::ApplicationCommandInteraction,
+    },
+    prelude::Context,
+};
 
-use super::SlashCommand;
+use super::{CommandError, SlashCommand};
 
 pub struct TicketCommand;
 
 impl SlashCommand for TicketCommand {
-    fn register<'a>(&'a self, command: &'a mut serenity::builder::CreateApplicationCommand) -> &mut serenity::builder::CreateApplicationCommand {
+    fn register<'a>(
+        &'a self,
+        command: &'a mut CreateApplicationCommand,
+    ) -> &mut CreateApplicationCommand {
         Self::build_close_command(command);
         Self::build_create_command(command);
         Self::build_invite_command(command)
@@ -13,10 +22,10 @@ impl SlashCommand for TicketCommand {
 
     fn dispatch(
         &self,
-        command: &serenity::model::prelude::interaction::application_command::ApplicationCommandInteraction,
-        ctx: &serenity::prelude::Context,
+        command: &ApplicationCommandInteraction,
+        ctx: &Context,
         database: &sqlx::PgPool,
-    ) -> Result<(), super::CommandError> {
+    ) -> Result<(), CommandError> {
         todo!()
     }
 }
@@ -30,7 +39,7 @@ impl TicketCommand {
             .description("Commands for ticket creation and management.")
             .create_option(|sub_command| {
                 sub_command
-                    .name("create")
+                    .name("create1")
                     .description("Creates a new ticket for the requesting person.")
                     .kind(CommandOptionType::SubCommand)
             })

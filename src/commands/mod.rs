@@ -5,6 +5,7 @@ pub mod say;
 pub mod nuke;
 pub mod role_selection;
 pub mod ticket;
+pub mod lls;
 
 use serenity::{
     builder::CreateApplicationCommand,
