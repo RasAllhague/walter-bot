@@ -1,22 +1,22 @@
 use chrono::NaiveDateTime;
 
 pub struct CommandInfo {
-    id_command_info: i32,
-    guild_id: u64,
-    command_name: String,
-    parameter: Option<String>,
-    create_user_id: u64,
-    create_date: NaiveDateTime,
+    pub id_command_info: i32,
+    pub guild_id: u64,
+    pub command_name: String,
+    pub parameter: Option<String>,
+    pub create_user_id: u64,
+    pub create_date: NaiveDateTime,
 }
 
 pub struct Infraction {
-    id_infraction: i32,
-    guild_id: u64,
-    punisher_id: u64,
-    punished_id: u64,
-    reason: Option<String>,
-    create_date: NaiveDateTime,
-    punishment_type: PunishmentType,
+    pub id_infraction: i32,
+    pub guild_id: u64,
+    pub punisher_id: u64,
+    pub punished_id: u64,
+    pub reason: Option<String>,
+    pub create_date: NaiveDateTime,
+    pub punishment_type: PunishmentType,
 }
 
 pub enum PunishmentType {
@@ -27,8 +27,8 @@ pub enum PunishmentType {
 }
 
 pub struct MessageActivityLog {
-    id_message_activity_log: i32,
-    writer_id: u64,
-    guild_id: u64,
-    write_date: NaiveDateTime,
+    pub id_message_activity_log: i32,
+    pub writer_id: u64,
+    pub guild_id: u64,
+    pub write_date: NaiveDateTime,
 }

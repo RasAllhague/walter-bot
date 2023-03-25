@@ -1,14 +1,14 @@
 use chrono::NaiveDateTime;
 
 pub struct RoleRight {
-    id_role_right: i32,
-    bot_right: BotRight,
-    role_id: u64,
-    guild_id: u64,
-    create_date: NaiveDateTime,
-    create_user_id: u64,
-    modify_date: Option<NaiveDateTime>,
-    modify_user_id: Option<u64>,
+    pub id_role_right: i32,
+    pub bot_right: BotRight,
+    pub role_id: u64,
+    pub guild_id: u64,
+    pub create_date: NaiveDateTime,
+    pub create_user_id: u64,
+    pub modify_date: Option<NaiveDateTime>,
+    pub modify_user_id: Option<u64>,
 }
 
 pub enum BotRight {

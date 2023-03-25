@@ -1,14 +1,14 @@
 use chrono::NaiveDateTime;
 
 pub struct Ticket {
-    id_ticket: i32,
-    guild_id: u64,
-    messages: i32,
-    archived_messages: Option<String>,
-    ticket_channel_id: u64,
-    is_archived: bool,
-    create_date: NaiveDateTime,
-    create_user_id: u64,
-    modify_date: Option<NaiveDateTime>,
-    modify_user_id: Option<u64>,
+    pub id_ticket: i32,
+    pub guild_id: u64,
+    pub messages: i32,
+    pub archived_messages: Option<String>,
+    pub ticket_channel_id: u64,
+    pub is_archived: bool,
+    pub create_date: NaiveDateTime,
+    pub create_user_id: u64,
+    pub modify_date: Option<NaiveDateTime>,
+    pub modify_user_id: Option<u64>,
 }
