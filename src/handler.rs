@@ -87,6 +87,7 @@ impl EventHandler for BotHandler {
         debug!("Resumed; trace: {:?}", resume.trace);
     }
 
+    #[instrument(skip(self, ctx))]
     async fn message(&self, ctx: Context, msg: Message) {
         info!("Message received!");
 
