@@ -43,7 +43,7 @@ async fn main() {
     commands.push(Arc::new(TicketCommand));
     commands.push(Arc::new(LssCommand));
 
-    let intents = GatewayIntents::default();
+    let intents = GatewayIntents::default() | GatewayIntents::MESSAGE_CONTENT | GatewayIntents::GUILD_MESSAGES;
     let mut client = Client::builder(config.bot_token, intents)
         .event_handler(BotHandler::new(database, &commands, &config.lls_file_path))
         .await

@@ -87,10 +87,7 @@ impl EventHandler for BotHandler {
         debug!("Resumed; trace: {:?}", resume.trace);
     }
 
-    #[instrument(skip(self, ctx))]
     async fn message(&self, ctx: Context, msg: Message) {
-        info!("Message received!");
-
         if let Err(why) = react_to_messages(ctx, msg).await {
             error!("Error while reacting to message: {}", why);
         }
@@ -120,9 +117,6 @@ pub async fn react_to_messages(ctx: Context, msg: Message) -> Result<(), serenit
         .await?;
 
         info!("Reacted to message.");
-    }
-    else {
-        info!("Message not found!");
     }
 
     Ok(())
