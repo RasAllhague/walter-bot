@@ -1,7 +1,10 @@
-use std::{fmt, error::Error};
+use std::{error::Error, fmt};
 
 use serenity::model::{
-    prelude::{interaction::application_command::{CommandDataOption, CommandDataOptionValue}, ChannelId},
+    prelude::{
+        interaction::application_command::{CommandDataOption, CommandDataOptionValue},
+        ChannelId,
+    },
     user::User,
 };
 use sqlx::types::chrono::{NaiveDate, NaiveDateTime};
@@ -74,7 +77,11 @@ impl DateInputParser {
 pub struct OptionParser;
 
 impl OptionParser {
-    pub fn parse_channel_id(&self, options: &[CommandDataOption], index: usize) -> Result<ChannelId, ParserError> {
+    pub fn parse_channel_id(
+        &self,
+        options: &[CommandDataOption],
+        index: usize,
+    ) -> Result<ChannelId, ParserError> {
         if let Some(option) = options.get(index) {
             if let Some(value) = option.resolved.as_ref() {
                 if let CommandDataOptionValue::Channel(data) = value {
@@ -83,10 +90,17 @@ impl OptionParser {
             }
         }
 
-        Err(ParserError::ChannelId(format!("No ChannelId option was found at index {}!", index)))
+        Err(ParserError::ChannelId(format!(
+            "No ChannelId option was found at index {}!",
+            index
+        )))
     }
 
-    pub fn parse_string(&self, options: &[CommandDataOption], index: usize) -> Result<String, ParserError> {
+    pub fn parse_string(
+        &self,
+        options: &[CommandDataOption],
+        index: usize,
+    ) -> Result<String, ParserError> {
         if let Some(option) = options.get(index) {
             if let Some(value) = option.resolved.as_ref() {
                 if let CommandDataOptionValue::String(data) = value {
@@ -95,6 +109,9 @@ impl OptionParser {
             }
         }
 
-        Err(ParserError::Text(format!("No Text option was found at index {}!", index)))
+        Err(ParserError::Text(format!(
+            "No Text option was found at index {}!",
+            index
+        )))
     }
 }

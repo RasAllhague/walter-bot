@@ -2,7 +2,8 @@ use async_trait::async_trait;
 use serenity::{
     builder::{CreateApplicationCommand, CreateApplicationCommands},
     model::prelude::{
-        command::{CommandOptionType, Command}, interaction::application_command::ApplicationCommandInteraction,
+        command::{Command, CommandOptionType},
+        interaction::application_command::ApplicationCommandInteraction,
     },
     prelude::Context,
 };

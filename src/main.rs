@@ -11,12 +11,10 @@ use serenity::prelude::*;
 use tracing::{instrument, log::error};
 
 mod commands;
+mod config;
 mod handler;
 pub mod models;
 mod utils;
-mod config;
-
-
 
 #[tokio::main]
 #[instrument]

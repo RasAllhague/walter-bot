@@ -28,25 +28,24 @@ impl SlashCommand for SayCommand {
         &'a self,
         commands: &'a mut CreateApplicationCommands,
     ) -> &mut CreateApplicationCommands {
-        
         commands.create_application_command(|command| {
             command
-            .name("say")
-            .description("Command for sending a message as the bot.")
-            .create_option(|sub_command| {
-                sub_command
-                .name("channel")
-                .description("The channel to which this message should be send to.")
-                .kind(CommandOptionType::Channel)
-                .required(true)
-            })
-            .create_option(|sub_command| {
-                sub_command
-                .name("message")
-                .description("The message which should be send.")
-                .kind(CommandOptionType::String)
-                .required(true)
-            })
+                .name("say")
+                .description("Command for sending a message as the bot.")
+                .create_option(|sub_command| {
+                    sub_command
+                        .name("channel")
+                        .description("The channel to which this message should be send to.")
+                        .kind(CommandOptionType::Channel)
+                        .required(true)
+                })
+                .create_option(|sub_command| {
+                    sub_command
+                        .name("message")
+                        .description("The message which should be send.")
+                        .kind(CommandOptionType::String)
+                        .required(true)
+                })
         });
 
         commands
@@ -81,18 +80,14 @@ impl SayCommand {
 
         let parser = OptionParser;
 
-        let channel_id = parser
-            .parse_channel_id(options, 0)?;
-        let message = parser
-            .parse_string(options, 1)?;
+        let channel_id = parser.parse_channel_id(options, 0)?;
+        let message = parser.parse_string(options, 1)?;
 
         channel_id
             .send_message(&ctx.http, |create_message| create_message.content(message))
             .await?;
 
-        command
-            .delete_original_interaction_response(ctx)
-            .await?;
+        command.delete_original_interaction_response(ctx).await?;
 
         Ok(())
     }

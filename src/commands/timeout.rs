@@ -76,7 +76,7 @@ impl SlashCommand for TimeoutCommand {
         commands: &'a mut CreateApplicationCommands,
     ) -> &mut CreateApplicationCommands {
         commands.create_application_command(|command| Self::build(command));
-        
+
         commands
     }
 

@@ -15,9 +15,7 @@ use super::{CommandError, SlashCommand};
 pub struct RoleSelectionCommand;
 
 impl RoleSelectionCommand {
-    fn build(
-        command: &mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
+    fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
             .name("role-selection")
             .description("Commands for configuration role selection.")

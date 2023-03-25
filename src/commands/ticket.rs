@@ -21,7 +21,7 @@ impl SlashCommand for TicketCommand {
         commands: &'a mut CreateApplicationCommands,
     ) -> &mut CreateApplicationCommands {
         commands.create_application_command(|command| Self::build(command));
-        
+
         commands
     }
 
@@ -39,9 +39,7 @@ impl SlashCommand for TicketCommand {
 }
 
 impl TicketCommand {
-    fn build(
-        command: &mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
+    fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
             .name("ticket")
             .description("Commands for ticket creation and management.")
