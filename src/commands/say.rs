@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use serenity::{
-    builder::{CreateApplicationCommand, CreateApplicationCommands},
+    builder::{CreateApplicationCommands},
     model::{
         prelude::{
             command::CommandOptionType,
@@ -8,13 +8,11 @@ use serenity::{
                 application_command::{ApplicationCommandInteraction, CommandDataOption},
                 InteractionResponseType,
             },
-            GuildId,
         },
-        user::User,
     },
     prelude::Context,
 };
-use sqlx::PgPool;
+
 
 use crate::handler::Configuration;
 
