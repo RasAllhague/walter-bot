@@ -115,6 +115,8 @@ pub async fn react_to_messages(ctx: Context, msg: Message) -> Result<(), serenit
             },
         )
         .await?;
+
+        info!("Reacted to message.");
     }
 
     Ok(())
