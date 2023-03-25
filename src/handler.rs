@@ -2,7 +2,10 @@ use std::sync::Arc;
 
 use serenity::{
     async_trait,
-    model::prelude::{command::Command, interaction::Interaction, Ready, ResumedEvent},
+    model::prelude::{
+        command::Command, interaction::Interaction, EmojiId, Message, ReactionType, Ready,
+        ResumedEvent,
+    },
     prelude::{Context, EventHandler},
 };
 use tracing::{
@@ -83,4 +86,36 @@ impl EventHandler for BotHandler {
     async fn resume(&self, _ctx: Context, resume: ResumedEvent) {
         debug!("Resumed; trace: {:?}", resume.trace);
     }
+
+    async fn message(&self, ctx: Context, msg: Message) {
+        if let Err(why) = react_to_messages(ctx, msg).await {
+            error!("Error while reacting to message: {}", why);
+        }
+    }
+}
+
+pub async fn react_to_messages(ctx: Context, msg: Message) -> Result<(), serenity::Error> {
+    if msg.content.to_lowercase().contains("stalweidism") {
+        msg.react(
+            &ctx,
+            ReactionType::Custom {
+                animated: false,
+                id: EmojiId(767402279539441684),
+                name: Some(String::from("doy")),
+            },
+        )
+        .await?;
+
+        msg.react(
+            &ctx,
+            ReactionType::Custom {
+                animated: false,
+                id: EmojiId(848665642713874472),
+                name: Some(String::from("FGuOoDoY")),
+            },
+        )
+        .await?;
+    }
+
+    Ok(())
 }
