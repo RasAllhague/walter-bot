@@ -88,6 +88,8 @@ impl EventHandler for BotHandler {
     }
 
     async fn message(&self, ctx: Context, msg: Message) {
+        info!("Message received!");
+
         if let Err(why) = react_to_messages(ctx, msg).await {
             error!("Error while reacting to message: {}", why);
         }
