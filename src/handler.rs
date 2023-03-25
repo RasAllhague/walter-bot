@@ -118,6 +118,9 @@ pub async fn react_to_messages(ctx: Context, msg: Message) -> Result<(), serenit
 
         info!("Reacted to message.");
     }
+    else {
+        info!("Message not found!");
+    }
 
     Ok(())
 }
