@@ -18,7 +18,7 @@ use tracing::{
 
 use crate::{
     commands::{CommandError, SlashCommand},
-    models::logs::CommandInfo,
+    models::{discord::User, logs::CommandInfo},
 };
 
 pub struct BotHandler {
@@ -48,9 +48,31 @@ impl CommandUsageLogger {
             chrono::offset::Utc::now().naive_utc(),
         );
 
+        if let None = User::get(
+            db,
+            interaction.user.id.0 as i64,
+            interaction.guild_id.unwrap().0 as i64,
+        )
+        .await?
+        {
+            let user = User::new(
+                interaction.user.id.0 as i64,
+                interaction.guild_id.unwrap().0 as i64,
+                Some(interaction.user.name.clone()),
+                chrono::offset::Utc::now().naive_utc(),
+            );
+
+            user.insert(db).await?;
+        }
+
         command_info.insert(db).await?;
 
-        info!("User {}:{} used the '{}' command!", interaction.user.id, interaction.guild_id.unwrap().0, interaction.data.name);
+        info!(
+            "User {}:{} used the '{}' command!",
+            interaction.user.id,
+            interaction.guild_id.unwrap().0,
+            interaction.data.name
+        );
 
         Ok(())
     }
