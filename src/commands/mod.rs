@@ -33,6 +33,7 @@ pub trait SlashCommand: Send + Sync {
         database: &sqlx::PgPool,
         configuration: &Configuration,
     ) -> Result<(), CommandError>;
+    fn name(&self) -> String;
 }
 
 #[derive(Debug)]

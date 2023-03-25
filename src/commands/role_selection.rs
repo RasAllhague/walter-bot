@@ -14,10 +14,12 @@ use super::{CommandError, SlashCommand};
 
 pub struct RoleSelectionCommand;
 
+static COMMAND_NAME: &str = "role-selection";
+
 impl RoleSelectionCommand {
     fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
-            .name("role-selection")
+            .name(COMMAND_NAME)
             .description("Commands for configuration role selection.")
             .create_option(|sub_command| {
                 sub_command
@@ -76,6 +78,10 @@ impl RoleSelectionCommand {
 
 #[async_trait]
 impl SlashCommand for RoleSelectionCommand {
+    fn name(&self) -> String {
+        String::from(COMMAND_NAME)
+    }
+
     fn register<'a>(
         &'a self,
         commands: &'a mut CreateApplicationCommands,

@@ -3,8 +3,11 @@ use std::sync::Arc;
 use serenity::{
     async_trait,
     model::prelude::{
-        command::Command, interaction::Interaction, EmojiId, Message, ReactionType, Ready,
-        ResumedEvent,
+        command::Command,
+        interaction::{
+            application_command::ApplicationCommandInteraction, Interaction, InteractionType,
+        },
+        EmojiId, Message, ReactionType, Ready, ResumedEvent,
     },
     prelude::{Context, EventHandler},
 };
@@ -13,7 +16,10 @@ use tracing::{
     log::{debug, error},
 };
 
-use crate::commands::SlashCommand;
+use crate::{
+    commands::{CommandError, SlashCommand},
+    models::logs::CommandInfo,
+};
 
 pub struct BotHandler {
     pub database: sqlx::PgPool,
@@ -23,6 +29,31 @@ pub struct BotHandler {
 
 pub struct Configuration {
     pub lls_file_path: String,
+}
+
+pub struct CommandUsageLogger;
+
+impl CommandUsageLogger {
+    pub async fn log(
+        &self,
+        ctx: &Context,
+        interaction: &ApplicationCommandInteraction,
+        db: &sqlx::PgPool,
+    ) -> Result<(), CommandError> {
+        let command_info = CommandInfo::new(
+            interaction.guild_id.unwrap().0 as i64,
+            &interaction.data.name,
+            None,
+            interaction.user.id.0 as i64,
+            chrono::offset::Utc::now().naive_utc(),
+        );
+
+        command_info.insert(db).await?;
+
+        info!("User {}:{} used the '{}' command!", interaction.user.id, interaction.guild_id.unwrap().0, interaction.data.name);
+
+        Ok(())
+    }
 }
 
 impl BotHandler {
@@ -53,7 +84,20 @@ impl EventHandler for BotHandler {
                 lls_file_path: self.lls_file_path.clone(),
             };
 
-            for command in self.commands.iter() {
+            let command_logger = CommandUsageLogger;
+
+            for command in self
+                .commands
+                .iter()
+                .filter(|x| x.name() == command_interaction.data.name)
+            {
+                if let Err(why) = command_logger
+                    .log(&ctx, &command_interaction, &self.database)
+                    .await
+                {
+                    error!("Failed to log command usage: {:?}", why);
+                }
+
                 if let Err(why) = command
                     .dispatch(&command_interaction, &ctx, &self.database, &conf)
                     .await

@@ -14,10 +14,12 @@ use super::SlashCommand;
 
 pub struct TimeoutCommand;
 
+static COMMAND_NAME: &str = "timeout";
+
 impl TimeoutCommand {
     fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
-            .name("timeout")
+            .name(COMMAND_NAME)
             .description("Command group for timeouts.")
             .create_option(|sub_command| {
                 sub_command
@@ -71,6 +73,10 @@ impl TimeoutCommand {
 
 #[async_trait]
 impl SlashCommand for TimeoutCommand {
+    fn name(&self) -> String {
+        String::from(COMMAND_NAME)
+    }
+
     fn register<'a>(
         &'a self,
         commands: &'a mut CreateApplicationCommands,

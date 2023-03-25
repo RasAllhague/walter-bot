@@ -15,10 +15,12 @@ use super::{CommandError, SlashCommand};
 
 pub struct InfractionCommand;
 
+static COMMAND_NAME: &str = "infraction";
+
 impl InfractionCommand {
     fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
-            .name("infraction")
+            .name(COMMAND_NAME)
             .description("Command group for punishing users.")
             .create_option(|sub_command| {
                 sub_command
@@ -251,5 +253,9 @@ impl SlashCommand for InfractionCommand {
         warn!("Not implemented!");
 
         Ok(())
+    }
+
+    fn name(&self) -> String {
+        String::from(COMMAND_NAME)
     }
 }

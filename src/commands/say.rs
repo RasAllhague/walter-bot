@@ -20,15 +20,21 @@ use super::{parser::OptionParser, CommandError, SlashCommand};
 
 pub struct SayCommand;
 
+static COMMAND_NAME: &str = "say";
+
 #[async_trait]
 impl SlashCommand for SayCommand {
+    fn name(&self) -> String {
+        String::from(COMMAND_NAME)
+    }
+
     fn register<'a>(
         &'a self,
         commands: &'a mut CreateApplicationCommands,
     ) -> &mut CreateApplicationCommands {
         commands.create_application_command(|command| {
             command
-                .name("say")
+                .name(COMMAND_NAME)
                 .description("Command for sending a message as the bot.")
                 .create_option(|sub_command| {
                     sub_command
@@ -56,10 +62,7 @@ impl SlashCommand for SayCommand {
         _: &sqlx::PgPool,
         _: &Configuration,
     ) -> Result<(), CommandError> {
-        match command.data.name.as_str() {
-            "say" => self.run(&command, ctx, &command.data.options).await,
-            _ => Ok(()),
-        }
+        self.run(&command, ctx, &command.data.options).await
     }
 }
 

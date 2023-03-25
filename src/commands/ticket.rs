@@ -14,8 +14,14 @@ use super::{CommandError, SlashCommand};
 
 pub struct TicketCommand;
 
+static COMMAND_NAME: &str = "ticket";
+
 #[async_trait]
 impl SlashCommand for TicketCommand {
+    fn name(&self) -> String {
+        String::from(COMMAND_NAME)
+    }
+
     fn register<'a>(
         &'a self,
         commands: &'a mut CreateApplicationCommands,
@@ -41,7 +47,7 @@ impl SlashCommand for TicketCommand {
 impl TicketCommand {
     fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
-            .name("ticket")
+            .name(COMMAND_NAME)
             .description("Commands for ticket creation and management.")
             .create_option(|sub_command| {
                 sub_command

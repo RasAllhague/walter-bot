@@ -14,15 +14,21 @@ use super::{CommandError, SlashCommand};
 
 pub struct NukeCommand;
 
+static COMMAND_NAME: &str = "nuke";
+
 #[async_trait]
 impl SlashCommand for NukeCommand {
+    fn name(&self) -> String {
+        String::from(COMMAND_NAME)
+    }
+
     fn register<'a>(
         &'a self,
         commands: &'a mut CreateApplicationCommands,
     ) -> &mut CreateApplicationCommands {
         commands.create_application_command(|command| {
             command
-                .name("nuke")
+                .name(COMMAND_NAME)
                 .description("Command for nuking an entire channel with a timeout nuke.")
                 .create_option(|sub_command| {
                     sub_command

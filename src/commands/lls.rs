@@ -18,6 +18,8 @@ use super::{CommandError, SlashCommand};
 
 pub struct LssCommand;
 
+static COMMAND_NAME: &str = "lls";
+
 async fn get_random_file(lls_image_path: &str) -> Result<PathBuf, CommandError> {
     let mut dir = read_dir(lls_image_path).await?;
     let mut paths = Vec::new();
@@ -65,12 +67,16 @@ impl SlashCommand for LssCommand {
 
         Ok(())
     }
+
+    fn name(&self) -> String {
+        String::from(COMMAND_NAME)
+    }
 }
 
 impl LssCommand {
     fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
-            .name("lls")
+            .name(COMMAND_NAME)
             .description("Command for sending lls images.")
     }
 }
