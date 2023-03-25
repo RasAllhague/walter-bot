@@ -65,7 +65,7 @@ impl EventHandler for BotHandler {
         info!("{} is connected!", ready.user.name);
 
         let guild_commands =
-            Command::create_global_application_command(&ctx.http, |command_builder| {
+            Command::set_global_application_commands(&ctx.http, |command_builder| {
                 for command in &self.commands {
                     command.register(command_builder);
                 }

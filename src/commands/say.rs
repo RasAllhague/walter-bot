@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use serenity::{
-    builder::CreateApplicationCommand,
+    builder::{CreateApplicationCommand, CreateApplicationCommands},
     model::{
         prelude::{
             command::CommandOptionType,
@@ -26,25 +26,30 @@ pub struct SayCommand;
 impl SlashCommand for SayCommand {
     fn register<'a>(
         &'a self,
-        command: &'a mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        command
+        commands: &'a mut CreateApplicationCommands,
+    ) -> &mut CreateApplicationCommands {
+        
+        commands.create_application_command(|command| {
+            command
             .name("say")
             .description("Command for sending a message as the bot.")
             .create_option(|sub_command| {
                 sub_command
-                    .name("channel")
-                    .description("The channel to which this message should be send to.")
-                    .kind(CommandOptionType::Channel)
-                    .required(true)
+                .name("channel")
+                .description("The channel to which this message should be send to.")
+                .kind(CommandOptionType::Channel)
+                .required(true)
             })
             .create_option(|sub_command| {
                 sub_command
-                    .name("message")
-                    .description("The message which should be send.")
-                    .kind(CommandOptionType::String)
-                    .required(true)
+                .name("message")
+                .description("The message which should be send.")
+                .kind(CommandOptionType::String)
+                .required(true)
             })
+        });
+
+        commands
     }
 
     async fn dispatch(

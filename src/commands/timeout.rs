@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use serenity::{
-    builder::CreateApplicationCommand,
+    builder::{CreateApplicationCommand, CreateApplicationCommands},
     model::prelude::{
         command::CommandOptionType, interaction::application_command::ApplicationCommandInteraction,
     },
@@ -15,7 +15,7 @@ use super::SlashCommand;
 pub struct TimeoutCommand;
 
 impl TimeoutCommand {
-    fn build_set_command(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
             .name("timeout")
             .description("Command group for timeouts.")
@@ -46,14 +46,6 @@ impl TimeoutCommand {
                             .required(false)
                     })
             })
-    }
-
-    fn build_revoke_command(
-        command: &mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        command
-            .name("timeout")
-            .description("Command group for timeouts.")
             .create_option(|sub_command| {
                 sub_command
                     .name("revoke")
@@ -81,10 +73,11 @@ impl TimeoutCommand {
 impl SlashCommand for TimeoutCommand {
     fn register<'a>(
         &'a self,
-        command: &'a mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        Self::build_set_command(command);
-        Self::build_revoke_command(command)
+        commands: &'a mut CreateApplicationCommands,
+    ) -> &mut CreateApplicationCommands {
+        commands.create_application_command(|command| Self::build(command));
+        
+        commands
     }
 
     async fn dispatch(

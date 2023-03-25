@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use async_trait::async_trait;
 use rand::Rng;
 use serenity::{
-    builder::CreateApplicationCommand,
+    builder::{CreateApplicationCommand, CreateApplicationCommands},
     model::prelude::interaction::{
         application_command::ApplicationCommandInteraction, InteractionResponseType,
     },
@@ -39,9 +39,11 @@ async fn get_random_file(lls_image_path: &str) -> Result<PathBuf, CommandError> 
 impl SlashCommand for LssCommand {
     fn register<'a>(
         &'a self,
-        command: &'a mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        Self::build_lss_command(command)
+        commands: &'a mut CreateApplicationCommands,
+    ) -> &mut CreateApplicationCommands {
+        commands.create_application_command(|command| Self::build_lss_command(command));
+
+        commands
     }
 
     async fn dispatch(

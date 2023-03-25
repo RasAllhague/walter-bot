@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use serenity::{
-    builder::CreateApplicationCommand,
+    builder::{CreateApplicationCommand, CreateApplicationCommands},
     model::prelude::{
         command::CommandOptionType, interaction::application_command::ApplicationCommandInteraction,
     },
@@ -18,11 +18,13 @@ pub struct TicketCommand;
 impl SlashCommand for TicketCommand {
     fn register<'a>(
         &'a self,
-        command: &'a mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        Self::build_close_command(command);
-        Self::build_create_command(command);
-        Self::build_invite_command(command)
+        commands: &'a mut CreateApplicationCommands,
+    ) -> &mut CreateApplicationCommands {
+        // commands.create_application_command(|command| Self::build_close_command(command));
+        commands.create_application_command(|command| Self::build_create_command(command));
+        // commands.create_application_command(|command| Self::build_invite_command(command));
+        
+        commands
     }
 
     async fn dispatch(
@@ -47,18 +49,10 @@ impl TicketCommand {
             .description("Commands for ticket creation and management.")
             .create_option(|sub_command| {
                 sub_command
-                    .name("create1")
+                    .name("create")
                     .description("Creates a new ticket for the requesting person.")
                     .kind(CommandOptionType::SubCommand)
             })
-    }
-
-    fn build_invite_command(
-        command: &mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        command
-            .name("ticket")
-            .description("Commands for ticket creation and management.")
             .create_option(|sub_command| {
                 sub_command
                     .name("invite")
@@ -79,14 +73,6 @@ impl TicketCommand {
                             .required(true)
                     })
             })
-    }
-
-    fn build_close_command(
-        command: &mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        command
-            .name("ticket")
-            .description("Commands for ticket creation and management.")
             .create_option(|sub_command| {
                 sub_command
                     .name("close")

@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use serenity::{
-    builder::CreateApplicationCommand,
+    builder::{CreateApplicationCommand, CreateApplicationCommands},
     model::prelude::{
         command::CommandOptionType, interaction::application_command::ApplicationCommandInteraction,
     },
@@ -18,9 +18,10 @@ pub struct NukeCommand;
 impl SlashCommand for NukeCommand {
     fn register<'a>(
         &'a self,
-        command: &'a mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        command
+        commands: &'a mut CreateApplicationCommands,
+    ) -> &mut CreateApplicationCommands {
+        commands.create_application_command(|command| {
+            command
             .name("nuke")
             .description("Command for nuking an entire channel with a timeout nuke.")
             .create_option(|sub_command| {
@@ -37,6 +38,9 @@ impl SlashCommand for NukeCommand {
                     .kind(CommandOptionType::Integer)
                     .required(true)
             })
+        });
+        
+        commands
     }
 
     async fn dispatch(

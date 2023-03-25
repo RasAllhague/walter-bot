@@ -11,7 +11,7 @@ use std::{error::Error, fmt};
 
 use async_trait::async_trait;
 use serenity::{
-    builder::CreateApplicationCommand,
+    builder::{CreateApplicationCommand, CreateApplicationCommands},
     model::prelude::interaction::application_command::ApplicationCommandInteraction,
     prelude::Context,
 };
@@ -24,8 +24,8 @@ use self::parser::ParserError;
 pub trait SlashCommand: Send + Sync {
     fn register<'a>(
         &'a self,
-        command: &'a mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand;
+        commands: &'a mut CreateApplicationCommands,
+    ) -> &mut CreateApplicationCommands;
     async fn dispatch(
         &self,
         command: &ApplicationCommandInteraction,

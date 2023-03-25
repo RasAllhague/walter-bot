@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use serenity::{
-    builder::CreateApplicationCommand,
+    builder::{CreateApplicationCommand, CreateApplicationCommands},
     model::prelude::{
         command::CommandOptionType, interaction::application_command::ApplicationCommandInteraction,
     },
@@ -104,12 +104,13 @@ impl RoleSelectionCommand {
 impl SlashCommand for RoleSelectionCommand {
     fn register<'a>(
         &'a self,
-        command: &'a mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        Self::build_add_role_command(command);
-        Self::build_create_command(command);
-        Self::build_reload_command(command);
-        Self::build_remove_role_command(command)
+        commands: &'a mut CreateApplicationCommands,
+    ) -> &mut CreateApplicationCommands {
+        commands.create_application_command(|command| Self::build_add_role_command(command));
+        commands.create_application_command(|command| Self::build_reload_command(command));
+        commands.create_application_command(|command| Self::build_remove_role_command(command));
+
+        commands
     }
 
     async fn dispatch(
