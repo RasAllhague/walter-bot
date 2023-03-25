@@ -39,11 +39,11 @@ async fn main() {
     let mut commands: Vec<Arc<dyn SlashCommand>> = Vec::new();
     commands.push(Arc::new(InfractionCommand));
     commands.push(Arc::new(TimeoutCommand));
-    //commands.push(Arc::new(NukeCommand));
-    //commands.push(Arc::new(SayCommand));
-    //commands.push(Arc::new(RoleSelectionCommand));
-    //commands.push(Arc::new(TicketCommand));
-    //commands.push(Arc::new(LssCommand));
+    commands.push(Arc::new(NukeCommand));
+    commands.push(Arc::new(SayCommand));
+    commands.push(Arc::new(RoleSelectionCommand));
+    commands.push(Arc::new(TicketCommand));
+    commands.push(Arc::new(LssCommand));
 
     let intents = GatewayIntents::default();
     let mut client = Client::builder(config.bot_token, intents)

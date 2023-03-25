@@ -15,7 +15,7 @@ use super::{CommandError, SlashCommand};
 pub struct RoleSelectionCommand;
 
 impl RoleSelectionCommand {
-    fn build_create_command(
+    fn build(
         command: &mut CreateApplicationCommand,
     ) -> &mut CreateApplicationCommand {
         command
@@ -34,14 +34,6 @@ impl RoleSelectionCommand {
                             .required(true)
                     })
             })
-    }
-
-    fn build_add_role_command(
-        command: &mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        command
-            .name("role-selection")
-            .description("Commands for configuration role selection.")
             .create_option(|sub_command| {
                 sub_command
                     .name("add-role")
@@ -62,14 +54,6 @@ impl RoleSelectionCommand {
                             .required(true)
                     })
             })
-    }
-
-    fn build_remove_role_command(
-        command: &mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        command
-            .name("role-selection")
-            .description("Commands for configuration role selection.")
             .create_option(|sub_command| {
                 sub_command
                     .name("remove-role")
@@ -83,14 +67,6 @@ impl RoleSelectionCommand {
                             .required(true)
                     })
             })
-    }
-
-    fn build_reload_command(
-        command: &mut CreateApplicationCommand,
-    ) -> &mut CreateApplicationCommand {
-        command
-            .name("role-selection")
-            .description("Commands for configuration role selection.")
             .create_option(|sub_command| {
                 sub_command
                     .name("reload")
@@ -106,9 +82,7 @@ impl SlashCommand for RoleSelectionCommand {
         &'a self,
         commands: &'a mut CreateApplicationCommands,
     ) -> &mut CreateApplicationCommands {
-        commands.create_application_command(|command| Self::build_add_role_command(command));
-        commands.create_application_command(|command| Self::build_reload_command(command));
-        commands.create_application_command(|command| Self::build_remove_role_command(command));
+        commands.create_application_command(|command| Self::build(command));
 
         commands
     }

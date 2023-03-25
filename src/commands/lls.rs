@@ -41,7 +41,7 @@ impl SlashCommand for LssCommand {
         &'a self,
         commands: &'a mut CreateApplicationCommands,
     ) -> &mut CreateApplicationCommands {
-        commands.create_application_command(|command| Self::build_lss_command(command));
+        commands.create_application_command(|command| Self::build(command));
 
         commands
     }
@@ -68,7 +68,7 @@ impl SlashCommand for LssCommand {
 }
 
 impl LssCommand {
-    fn build_lss_command(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
+    fn build(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
         command
             .name("lls")
             .description("Command for sending lls images.")

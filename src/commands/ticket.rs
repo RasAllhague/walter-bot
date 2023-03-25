@@ -20,9 +20,7 @@ impl SlashCommand for TicketCommand {
         &'a self,
         commands: &'a mut CreateApplicationCommands,
     ) -> &mut CreateApplicationCommands {
-        // commands.create_application_command(|command| Self::build_close_command(command));
-        commands.create_application_command(|command| Self::build_create_command(command));
-        // commands.create_application_command(|command| Self::build_invite_command(command));
+        commands.create_application_command(|command| Self::build(command));
         
         commands
     }
@@ -41,7 +39,7 @@ impl SlashCommand for TicketCommand {
 }
 
 impl TicketCommand {
-    fn build_create_command(
+    fn build(
         command: &mut CreateApplicationCommand,
     ) -> &mut CreateApplicationCommand {
         command
