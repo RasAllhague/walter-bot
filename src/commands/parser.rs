@@ -1,5 +1,3 @@
-use std::{error::Error, fmt};
-
 use serenity::model::{
     prelude::{
         interaction::application_command::{CommandDataOption, CommandDataOptionValue},
@@ -11,40 +9,59 @@ use sqlx::types::chrono::{NaiveDate, NaiveDateTime};
 
 #[derive(Debug)]
 pub enum ParserError {
-    Date,
-    User(String),
-    ChannelId(String),
-    Text(String),
+    InvalidType(String),
+    InvalidAmount(String, usize),
+    NotFound(String),
 }
-pub struct UserInputParser;
 
-impl UserInputParser {
-    pub fn parse(&self, options: &[CommandDataOption], index: usize) -> Result<User, ParserError> {
+pub struct NamedOptionParser;
+
+impl NamedOptionParser {
+    pub fn parse_string(options: &[CommandDataOption], name: &str) -> Result<Option<String>, ParserError> {
+        let options: Vec<&CommandDataOption> =
+            options.into_iter().filter(|x| x.name == name).collect();
+
+        if options.len() == 0 {
+            return Ok(None)
+        }
+
+        if options.len() > 1 {
+            return Err(ParserError::InvalidAmount(name.to_string(), options.len()));
+        }
+
+        if let Some(value) = options[0].resolved.as_ref() {
+            if let CommandDataOptionValue::String(data) = value {
+                return Ok(Some(data.clone()));
+            }
+        }
+
+        Ok(None)
+    }
+}
+
+pub struct PositionalOptionParser;
+
+impl PositionalOptionParser {
+    pub fn parse_user(
+        &self,
+        options: &[CommandDataOption],
+        index: usize,
+    ) -> Result<User, ParserError> {
         if let Some(option) = options.get(index) {
             if let Some(value) = option.resolved.as_ref() {
                 if let CommandDataOptionValue::User(data, _) = value {
                     return Ok(data.clone());
                 }
-
-                return Err(ParserError::User(String::from("No value found!")));
             }
-
-            return Err(ParserError::User(String::from("No option found!")));
         }
 
-        return Err(ParserError::User(format!(
-            "No option found at index {}!",
-            index
-        )));
+        return Err(ParserError::NotFound(format!("index: {index}")));
     }
-}
 
-pub struct DateInputParser;
-
-impl DateInputParser {
-    pub fn parse(&self, options: &[CommandDataOption]) -> Result<NaiveDateTime, ParserError> {
-        let date_parts: Result<Vec<i64>, String> =
-            (0..3).map(|x| Self::get_int_option(options, x)).collect();
+    pub fn parse_date(options: &[CommandDataOption]) -> Result<NaiveDateTime, ParserError> {
+        let date_parts: Result<Vec<i64>, ParserError> = (0..3)
+            .map(|x| PositionalOptionParser::parser_integer(options, x))
+            .collect();
 
         let date_parts = date_parts.expect("User input expected.");
 
@@ -58,27 +75,10 @@ impl DateInputParser {
             }
         }
 
-        Err(ParserError::Date)
+        Err(ParserError::InvalidType(String::from("Not a valid date.")))
     }
 
-    fn get_int_option(options: &[CommandDataOption], index: usize) -> Result<i64, String> {
-        if let Some(option) = options.get(index) {
-            if let Some(value) = option.resolved.as_ref() {
-                if let CommandDataOptionValue::Integer(data) = value {
-                    return Ok(*data);
-                }
-            }
-        }
-
-        Err(format!("Option {} not found!", index))
-    }
-}
-
-pub struct OptionParser;
-
-impl OptionParser {
     pub fn parse_channel_id(
-        &self,
         options: &[CommandDataOption],
         index: usize,
     ) -> Result<ChannelId, ParserError> {
@@ -90,14 +90,22 @@ impl OptionParser {
             }
         }
 
-        Err(ParserError::ChannelId(format!(
-            "No ChannelId option was found at index {}!",
-            index
-        )))
+        Err(ParserError::NotFound(format!("index:{index}!")))
+    }
+
+    pub fn parser_integer(options: &[CommandDataOption], index: usize) -> Result<i64, ParserError> {
+        if let Some(option) = options.get(index) {
+            if let Some(value) = option.resolved.as_ref() {
+                if let CommandDataOptionValue::Integer(data) = value {
+                    return Ok(*data);
+                }
+            }
+        }
+
+        Err(ParserError::NotFound(format!("index: {index}")))
     }
 
     pub fn parse_string(
-        &self,
         options: &[CommandDataOption],
         index: usize,
     ) -> Result<String, ParserError> {
@@ -109,9 +117,6 @@ impl OptionParser {
             }
         }
 
-        Err(ParserError::Text(format!(
-            "No Text option was found at index {}!",
-            index
-        )))
+        Err(ParserError::NotFound(format!("index: {index}")))
     }
 }

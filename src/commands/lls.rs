@@ -55,14 +55,19 @@ impl SlashCommand for LssCommand {
         _: &sqlx::PgPool,
         configuration: &Configuration,
     ) -> Result<(), CommandError> {
+        command
+            .create_interaction_response(ctx, |m| {
+                m.kind(InteractionResponseType::DeferredChannelMessageWithSource)
+            })
+            .await?;
+
         let image_path = get_random_file(&configuration.lls_file_path).await?;
         info!("Sending lls image: {:?}", image_path);
 
-        command
-            .create_interaction_response(ctx, |m| {
-                m.kind(InteractionResponseType::ChannelMessageWithSource)
-                    .interaction_response_data(|x| x.add_file(&image_path))
-            })
+        command.edit_original_interaction_response(ctx, |m| m.content("Long live Stalweidism!"))
+            .await?;
+        command.channel_id
+            .send_message(&ctx.http, |create_message| create_message.add_file(&image_path))
             .await?;
 
         Ok(())

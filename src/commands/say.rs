@@ -16,7 +16,7 @@ use serenity::{
 
 use crate::handler::Configuration;
 
-use super::{parser::OptionParser, CommandError, SlashCommand};
+use super::{CommandError, SlashCommand, parser::PositionalOptionParser};
 
 pub struct SayCommand;
 
@@ -79,10 +79,8 @@ impl SayCommand {
             })
             .await?;
 
-        let parser = OptionParser;
-
-        let channel_id = parser.parse_channel_id(options, 0)?;
-        let message = parser.parse_string(options, 1)?;
+        let channel_id = PositionalOptionParser::parse_channel_id(options, 0)?;
+        let message = PositionalOptionParser::parse_string(options, 1)?;
 
         channel_id
             .send_message(&ctx.http, |create_message| create_message.content(message))

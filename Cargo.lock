@@ -137,6 +137,7 @@ dependencies = [
  "js-sys",
  "num-integer",
  "num-traits",
+ "serde",
  "time 0.1.45",
  "wasm-bindgen",
  "winapi",
@@ -1188,6 +1189,7 @@ dependencies = [
  "bitflags",
  "bytes",
  "cfg-if",
+ "chrono",
  "dashmap",
  "flate2",
  "futures",
@@ -1772,6 +1774,7 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "chrono",
+ "itertools",
  "rand",
  "serenity",
  "sqlx",
