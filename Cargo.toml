@@ -6,13 +6,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tracing = "0.1.37"
-tracing-subscriber = "0.3.16"
-tokio = { version = "1.26.0", features = ["macros", "rt-multi-thread", "fs"] }
-serenity = { version = "0.11.5", default-features = false, features = ["client", "gateway", "rustls_backend", "model", "cache", "chrono"] }
-sqlx = { version = "0.6.2", features = ["runtime-tokio-rustls", "postgres", "chrono"] }
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+tokio = { version = "1.34.0", features = ["macros", "rt-multi-thread", "fs"] }
+serenity = { version = "0.11.7", default-features = false, features = ["client", "gateway", "rustls_backend", "model", "cache", "chrono"] }
+sqlx = { version = "0.7.2", features = ["runtime-tokio-rustls", "postgres", "chrono"] }
 sys-info = "0.9.1"
-chrono = "0.4.10"
-async-trait = "0.1.66"
+chrono = "0.4.31"
+async-trait = "0.1.74"
 rand = "0.8.5"
-itertools = "0.10.5"
+itertools = "0.12.0"
